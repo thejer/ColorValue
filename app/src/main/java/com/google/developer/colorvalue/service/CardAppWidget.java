@@ -2,15 +2,19 @@ package com.google.developer.colorvalue.service;
 
 import static android.content.ContentValues.TAG;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.google.developer.colorvalue.CardDetailsActivity;
 import com.google.developer.colorvalue.R;
 import com.google.developer.colorvalue.data.Card;
 import com.google.developer.colorvalue.data.CardProvider;
@@ -59,8 +63,25 @@ public class CardAppWidget extends AppWidgetProvider {
         views.setTextViewText(R.id.widget_text, card.getHex());
         views.setInt(R.id.widget_background, "setBackgroundColor", Color.parseColor(card.getHex()));
 
+        Intent colorDetailIntent = new Intent(context, CardDetailsActivity.class);
+        Uri uri = buildCardClickedUri(card.getID());
+        colorDetailIntent.setData(uri);
+        colorDetailIntent.setData(uri);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context,
+                45,
+                colorDetailIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setOnClickPendingIntent(R.id.widget_background, pendingIntent);
+
         // Instruct the widget manager to update the widget
         widgetManager.updateAppWidget(widgetId, views);
+    }
+
+    private static Uri buildCardClickedUri(int id) {
+        return CardProvider.Contract.CONTENT_URI
+                .buildUpon()
+                .appendPath(Integer.toString(id))
+                .build();
     }
 }
 
