@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.developer.colorvalue.data.CardProvider;
+import com.google.developer.colorvalue.service.CardService;
 import com.google.developer.colorvalue.ui.ColorView;
 
 public class CardDetailsActivity extends AppCompatActivity implements
@@ -65,7 +66,8 @@ public class CardDetailsActivity extends AppCompatActivity implements
         int id = item.getItemId();
 
         if (id == R.id.action_delete){
-            deleteColor();
+            CardService.deleteCard(this, mDetailsUri);
+            CardDetailsActivity.this.finish();
         }else if (id == android.R.id.home) {
             onBackPressed();
         }
@@ -108,29 +110,4 @@ public class CardDetailsActivity extends AppCompatActivity implements
 
     }
 
-    @SuppressLint("StaticFieldLeak")
-    private void deleteColor (){
-
-        new AsyncTask<Uri, Void, Integer>() {
-            @Override
-            protected Integer doInBackground(Uri... uris) {
-                return getContentResolver().delete(uris[0], null, null);
-            }
-
-            @Override
-            protected void onPostExecute(Integer integer) {
-                super.onPostExecute(integer);
-                if (integer > 0) {
-                    CardDetailsActivity.this.finish();
-                }else {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(CardDetailsActivity.this, "Unable to delete", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-            }
-        }.execute(mDetailsUri);
-    }
 }

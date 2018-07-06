@@ -35,6 +35,10 @@ public class CardService extends IntentService {
 
     public static void deleteCard(Context context, Uri uri) {
         // TODO start service to delete card record
+        Intent intent  = new Intent(context, CardService.class);
+        intent.setAction(ACTION_DELETE);
+        intent.putExtra(EXTRA_DELETE_URI, uri);
+        context.startService(intent);
     }
 
     @Override
@@ -60,6 +64,12 @@ public class CardService extends IntentService {
     }
 
     private void handleActionDelete(Uri uri) {
-        // TODO delete card record
+
+        if (getContentResolver().delete(uri, null, null) > 0){
+            Log.d(TAG, "Deleted card");
+        }else {
+            Log.w(TAG, "Error deleting new card");
+        }
+
     }
 }
