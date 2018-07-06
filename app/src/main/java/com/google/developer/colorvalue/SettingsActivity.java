@@ -1,6 +1,8 @@
 package com.google.developer.colorvalue;
 
+import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,6 +12,8 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
 
 import com.google.developer.colorvalue.service.NotificationJobService;
+
+import java.util.concurrent.TimeUnit;
 
 public class SettingsActivity extends AppCompatActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener {
@@ -49,6 +53,13 @@ public class SettingsActivity extends AppCompatActivity implements
             JobScheduler jobScheduler =
                     (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
             // TODO implement JobScheduler for notification {@link ScheduledJobService}
+            ComponentName componentName =
+                    new ComponentName(this, NotificationJobService.class);
+            JobInfo.Builder jobInfo = new JobInfo.Builder(JOB_ID,
+                        componentName);
+//                    .setBackoffCriteria(TimeUnit.MINUTES.toMillis(2), JobInfo.BACKOFF_POLICY_EXPONENTIAL)
+                    jobInfo.setPeriodic(TimeUnit.DAYS.toMillis(1));
+            jobScheduler.schedule(jobInfo.build());
         }
     }
 

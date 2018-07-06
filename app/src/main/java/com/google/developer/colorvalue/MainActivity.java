@@ -21,6 +21,7 @@ import android.view.MenuItem;
 
 import com.google.developer.colorvalue.data.CardAdapter;
 import com.google.developer.colorvalue.data.CardProvider;
+import com.google.developer.colorvalue.service.NotificationJobService;
 
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>, CardAdapter.OnColorClickedListener {
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements
         mCardAdapter = new CardAdapter(this);
         recycler.setAdapter(mCardAdapter);
         recycler.setHasFixedSize(true);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

@@ -47,6 +47,7 @@
             android:name=".service.NotificationJobService"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service android:name=".service.PracticeReminderIntentService" />
 
         <receiver android:name=".service.CardAppWidget">
             <intent-filter>

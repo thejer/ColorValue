@@ -49,6 +49,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
         holder.itemView.setTag(id);
         holder.name.setText(hex);
+        holder.itemView.setBackgroundColor(Color.parseColor(hex));
 //        holder.name.setTextColor((Color.luminance(Color.parseColor(hex)) >= 0.5) ? Color.BLACK : Color.WHITE);
     }
 
