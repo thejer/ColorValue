@@ -15,6 +15,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.google.developer.colorvalue.CardDetailsActivity;
+import com.google.developer.colorvalue.MainActivity;
 import com.google.developer.colorvalue.R;
 import com.google.developer.colorvalue.data.Card;
 import com.google.developer.colorvalue.data.CardProvider;
@@ -45,7 +46,7 @@ public class CardAppWidget extends AppWidgetProvider {
         if (cursor != null) {
             cardCount = cursor.getCount();
         } else {
-            Log.w(TAG, "Unable to read card database");
+            Log.w(TAG, context.getString(R.string.unable_to_read_db_message));
             return;
         }
 
@@ -61,14 +62,12 @@ public class CardAppWidget extends AppWidgetProvider {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.card_widget);
 
         views.setTextViewText(R.id.widget_text, card.getHex());
-        views.setInt(R.id.widget_background, "setBackgroundColor", Color.parseColor(card.getHex()));
+        views.setInt(R.id.widget_background, "setBackgroundColor", card.getColorInt());
 
         Intent colorDetailIntent = new Intent(context, CardDetailsActivity.class);
-        Uri uri = buildCardClickedUri(card.getID());
-        colorDetailIntent.setData(uri);
-        colorDetailIntent.setData(uri);
+        colorDetailIntent.putExtra(MainActivity.CARD_EXTRA, card);
         PendingIntent pendingIntent = PendingIntent.getActivity(context,
-                45,
+                widgetId,
                 colorDetailIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.widget_background, pendingIntent);
@@ -77,11 +76,6 @@ public class CardAppWidget extends AppWidgetProvider {
         widgetManager.updateAppWidget(widgetId, views);
     }
 
-    private static Uri buildCardClickedUri(int id) {
-        return CardProvider.Contract.CONTENT_URI
-                .buildUpon()
-                .appendPath(Integer.toString(id))
-                .build();
-    }
+
 }
 

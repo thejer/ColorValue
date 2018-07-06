@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
+import com.google.developer.colorvalue.R;
 import com.google.developer.colorvalue.data.CardProvider;
 
 /**
@@ -57,18 +58,18 @@ public class CardService extends IntentService {
 
     private void handleActionInsert(ContentValues values) {
         if (getContentResolver().insert(CardProvider.Contract.CONTENT_URI, values) != null) {
-            Log.d(TAG, "Inserted new card");
+            Log.d(TAG, getString(R.string.inser_ted_card_message));
         } else {
-            Log.w(TAG, "Error inserting new card");
+            Log.w(TAG, getString(R.string.error_inserting_message));
         }
     }
 
     private void handleActionDelete(Uri uri) {
 
         if (getContentResolver().delete(uri, null, null) > 0){
-            Log.d(TAG, "Deleted card");
+            Log.d(TAG, getString(R.string.deleted_message));
         }else {
-            Log.w(TAG, "Error deleting new card");
+            Log.w(TAG, getString(R.string.error_deleting_message));
         }
 
     }

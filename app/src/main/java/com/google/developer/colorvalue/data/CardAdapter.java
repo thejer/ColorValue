@@ -18,7 +18,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     private Cursor mCursor;
 
     public interface OnColorClickedListener{
-        void onColorClicked(int id);
+        void onColorClicked(Card card);
     }
 
     private OnColorClickedListener mColorClickedListener;
@@ -50,7 +50,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         holder.itemView.setTag(id);
         holder.name.setText(hex);
         holder.itemView.setBackgroundColor(Color.parseColor(hex));
-        holder.name.setTextColor((Color.luminance(Color.parseColor(hex)) >= 0.5) ? Color.BLACK : Color.WHITE);
+//        holder.name.setTextColor((Color.luminance(Color.parseColor(hex)) >= 0.5) ? Color.BLACK : Color.WHITE);
     }
 
     @Override
@@ -102,8 +102,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         public void onClick(View v) {
             int position = getAdapterPosition();
             mCursor.moveToPosition(position);
-            int id = mCursor.getInt(mCursor.getColumnIndex(CardProvider.Contract.Columns._ID));
-            mColorClickedListener.onColorClicked(id);
+//            int id = mCursor.getInt(mCursor.getColumnIndex(CardProvider.Contract.Columns._ID));
+            mColorClickedListener.onColorClicked(getItem(getAdapterPosition()));
         }
     }
 

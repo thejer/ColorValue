@@ -1,34 +1,26 @@
 package com.google.developer.colorvalue;
 
-import android.annotation.SuppressLint;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.developer.colorvalue.data.CardProvider;
+import com.google.developer.colorvalue.data.Card;
 import com.google.developer.colorvalue.service.CardService;
 import com.google.developer.colorvalue.ui.ColorView;
 
-public class CardDetailsActivity extends AppCompatActivity implements
-        LoaderManager.LoaderCallbacks<Cursor>{
+public class CardDetailsActivity extends AppCompatActivity {
 
     private ColorView mDetailsColorView;
     private TextView mDetailsColorName,
             mDetailsColorHex;
 
-    private Uri mDetailsUri;
-
-    private static final int ID_DETAIL_LOADER = 30;
+    private Card mCard;
 
 
     @Override
@@ -43,12 +35,12 @@ public class CardDetailsActivity extends AppCompatActivity implements
         mDetailsColorName = findViewById(R.id.details_color_name);
         mDetailsColorHex = findViewById(R.id.details_hex_value);
 
-        mDetailsUri = getIntent().getData();
-        if (mDetailsUri == null)
-            throw new NullPointerException(getString(R.string.uri_cannot_be_null));
-
-
-        getSupportLoaderManager().initLoader(ID_DETAIL_LOADER, null, this);
+        if (getIntent() != null) {
+            mCard = getIntent().getParcelableExtra(MainActivity.CARD_EXTRA);
+            mDetailsColorName.setText(mCard.getName());
+            mDetailsColorHex.setText(mCard.getHex());
+            mDetailsColorView.setColor(mCard.getColorInt());
+        }
 
     }
 
@@ -65,49 +57,22 @@ public class CardDetailsActivity extends AppCompatActivity implements
 
         int id = item.getItemId();
 
-        if (id == R.id.action_delete){
-            CardService.deleteCard(this, mDetailsUri);
+        if (id == R.id.action_delete) {
+            CardService.deleteCard(this, mCard.getUri());
             CardDetailsActivity.this.finish();
-        }else if (id == android.R.id.home) {
-            onBackPressed();
+        } else if (id == android.R.id.home) {
+            Intent upIntent = NavUtils.getParentActivityIntent(this);
+
+//            if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+                TaskStackBuilder.create(this)
+                        .addNextIntentWithParentStack(upIntent)
+                        .startActivities();
+//            } else {
+//                NavUtils.navigateUpTo(this, upIntent);
+//            }
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
-        switch (id){
-            case ID_DETAIL_LOADER:
-                return new CursorLoader(this,
-                        mDetailsUri,
-                        null,
-                        null,
-                        null,
-                        null);
-            default:
-                throw new RuntimeException("Loader Not Implemented: " + id);
-        }
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
-        if (data != null && data.moveToFirst()){
-            String hex = data.getString(data.getColumnIndex(CardProvider.Contract.Columns.COLOR_HEX));
-            mDetailsColorView.setColor(hex);
-            String name = data.getString(data.getColumnIndex(CardProvider.Contract.Columns.COLOR_NAME));
-            mDetailsColorName.setText(name);
-            mDetailsColorHex.setText(hex);
-
-        }
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
     }
 
 }

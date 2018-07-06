@@ -47,7 +47,6 @@
             android:name=".service.NotificationJobService"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-        <service android:name=".service.PracticeReminderIntentService" />
 
         <receiver android:name=".service.CardAppWidget">
             <intent-filter>
@@ -61,10 +60,10 @@
 
         <activity android:name=".CardDetailsActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName="com.google.developer.colorvalue.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value="com.google.developer.colorvalue.MainActivity"/>
         </activity>
     </application>
 

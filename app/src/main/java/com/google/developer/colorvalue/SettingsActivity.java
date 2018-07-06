@@ -52,12 +52,10 @@ public class SettingsActivity extends AppCompatActivity implements
             boolean on = sharedPreferences.getBoolean(notifyKey, false);
             JobScheduler jobScheduler =
                     (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
-            // TODO implement JobScheduler for notification {@link ScheduledJobService}
             ComponentName componentName =
                     new ComponentName(this, NotificationJobService.class);
             JobInfo.Builder jobInfo = new JobInfo.Builder(JOB_ID,
                         componentName);
-//                    .setBackoffCriteria(TimeUnit.MINUTES.toMillis(2), JobInfo.BACKOFF_POLICY_EXPONENTIAL)
                     jobInfo.setPeriodic(TimeUnit.DAYS.toMillis(1));
             jobScheduler.schedule(jobInfo.build());
         }

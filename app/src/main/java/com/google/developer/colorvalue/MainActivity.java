@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.developer.colorvalue.data.Card;
 import com.google.developer.colorvalue.data.CardAdapter;
 import com.google.developer.colorvalue.data.CardProvider;
 import com.google.developer.colorvalue.service.NotificationJobService;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>, CardAdapter.OnColorClickedListener {
 
     private static final String TAG = "Main Activity";
+    public static final String CARD_EXTRA = "card_extra";
     private CardAdapter mCardAdapter;
     private static final int COLOR_LOADER_ID = 28;
 
@@ -142,17 +144,10 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onColorClicked(int id) {
+    public void onColorClicked(Card card) {
         Intent colorDetailIntent = new Intent(this, CardDetailsActivity.class);
-        Uri uri = buildCardClickedUri(id);
-        colorDetailIntent.setData(uri);
+        colorDetailIntent.putExtra(CARD_EXTRA, card);
         startActivity(colorDetailIntent);
     }
 
-    private static Uri buildCardClickedUri(int id) {
-        return CardProvider.Contract.CONTENT_URI
-                .buildUpon()
-                .appendPath(Integer.toString(id))
-                .build();
-    }
 }

@@ -72,8 +72,8 @@ public class ColorView extends View {
     @TargetApi(Build.VERSION_CODES.N)
     @Override
     public void setBackgroundColor(@ColorInt int color) {
-        luminance = Color.luminance(color);
-        colorHex = String.format("#%06X", (0xFFFFFF & color));
+//        luminance = Color.luminance(color);
+        colorHex = String.format(getContext().getString(R.string.color_hex_format), (0xFFFFFF & color));
         super.setBackgroundColor(color);
     }
 

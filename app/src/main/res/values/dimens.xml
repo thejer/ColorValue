@@ -6,4 +6,8 @@
     <dimen name="color_name_margin_top">30dp</dimen>
     <dimen name="color_name_text_size">40sp</dimen>
     <dimen name="width_0_dp">0dp</dimen>
+    <dimen name="card_widget_text_padding">3dp</dimen>
+    <dimen name="padding">16dp</dimen>
+    <dimen name="list_item_height">80dp</dimen>
+    <dimen name="margin_bottom">16dp</dimen>
 </resources>

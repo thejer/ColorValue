@@ -41,8 +41,6 @@ public class NotificationJobService extends JobService {
     @SuppressLint("StaticFieldLeak")
     @Override
     public boolean onStartJob(final JobParameters jobParameters) {
-        // TODO notification
-
         mNotificationBackgroundTask = new AsyncTask() {
             @Override
             protected Object doInBackground(Object[] objects) {
@@ -69,7 +67,6 @@ public class NotificationJobService extends JobService {
     }
 
     public static void remindUserForPractice(Context context) {
-        Log.i(TAG, "remindUserForPractice: notifs");
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -93,8 +90,7 @@ public class NotificationJobService extends JobService {
                         .setContentIntent(contentIntent(context))
                         .setAutoCancel(true);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
-                && Build.VERSION.SDK_INT < Build.VERSION_CODES.O){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O){
             notificationBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
         }
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
@@ -107,14 +103,6 @@ public class NotificationJobService extends JobService {
                 PRACTICE_PENDING_INTENT_ID,
                 startMainActivity,
                 PendingIntent.FLAG_UPDATE_CURRENT);
-
-    }
-
-    public static void clearAllNotifications(Context context) {
-        NotificationManager notificationManager = (NotificationManager)
-                context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancelAll();
-
 
     }
 

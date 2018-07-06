@@ -24,5 +24,12 @@
     <string name="tools_text_light_blue">Light Blue</string>
     <string name="light_blue_hex_value">#03A9F4</string>
     <string name="uri_cannot_be_null">Details uri cannot be null</string>
+    <string name="color_hex_format">#%06X</string>
+    <string name="tools_color_hex_text">#E91E63</string>
+    <string name="inser_ted_card_message">Inserted new card</string>
+    <string name="error_inserting_message">Error inserting new card</string>
+    <string name="deleted_message">Deleted card</string>
+    <string name="error_deleting_message">Error deleting new card</string>
+    <string name="unable_to_read_db_message">Unable to read card database</string>
 
 </resources>
