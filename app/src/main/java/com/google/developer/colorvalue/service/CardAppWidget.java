@@ -56,8 +56,8 @@ public class CardAppWidget extends AppWidgetProvider {
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.card_widget);
 
-        views.setTextViewText(R.id.widget_text, "EXAMPLE");
-        views.setInt(R.id.widget_background, "setBackgroundColor", Color.WHITE);
+        views.setTextViewText(R.id.widget_text, card.getHex());
+        views.setInt(R.id.widget_background, "setBackgroundColor", Color.parseColor(card.getHex()));
 
         // Instruct the widget manager to update the widget
         widgetManager.updateAppWidget(widgetId, views);
